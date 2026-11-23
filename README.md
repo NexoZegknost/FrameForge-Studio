@@ -2,11 +2,15 @@
 
 Plugin cho Claude giúp làm video tiếng Việt. Gói plugin hiện có một skill: **videoOverviewPrompt** (prompt cho Video Overview của Gemini Notebook).
 
-Phiên bản hiện tại: **0.3.5** · [Lịch sử thay đổi](CHANGELOG.md)
+Phiên bản hiện tại: **0.3.6** · [Lịch sử thay đổi](CHANGELOG.md)
 
 ## Tính năng
 
-- **Prompt Video Overview cho Gemini Notebook (videoOverviewPrompt):** từ bài ghi hoặc giáo án, soạn steering prompt để Gemini Notebook (NotebookLM) tạo video bài giảng: vai giảng viên, giọng miền Nam, đủ ý theo đề cương bài gốc, nhiều ví dụ minh họa; kèm gợi ý Format, Visual Style và Language.
+- **Bộ prompt Video Overview cho Gemini Notebook (videoOverviewPrompt):** từ bài ghi hoặc giáo án, soạn bộ steering prompt để Gemini Notebook (NotebookLM) tạo video bài giảng giải thích sâu nguyên lý, cơ chế:
+  - chia bài thành các cụm nguyên lý, mỗi video một cụm, đánh số theo thứ tự xem;
+  - mỗi video giải thích theo chuỗi cấu tạo → đầu vào → từng bước (kèm lý do) → kết quả → điều gì thay đổi khi đổi một yếu tố;
+  - bắt buộc nêu quy trình, công thức, số liệu, hình vẽ của tài liệu; hướng dẫn hình minh họa kỹ thuật; chặn kiểu nói chung chung;
+  - kèm gợi ý Format, Visual Style, Language, lưu ý giọng đọc và hạn mức tạo video mỗi ngày.
 
 ## Cách dùng
 
@@ -14,9 +18,9 @@ Nói với Claude bằng ngôn ngữ tự nhiên; skill tự chạy khi bạn nh
 
 | Yêu cầu | Kết quả |
 |---|---|
-| "Tạo prompt video overview cho bài ghi này" (kèm `.docx`/`.pdf` hoặc dán văn bản) | Steering prompt trong khối code và gợi ý cấu hình |
+| "Tạo prompt video overview cho bài ghi này" (kèm `.docx`/`.pdf` hoặc dán văn bản) | Bảng kế hoạch bộ video, mỗi video một prompt trong khối code, gợi ý cấu hình |
 
-Dán prompt vào ô tùy chỉnh khi tạo Video Overview trong notebook đã có sẵn tài liệu nguồn.
+Tải bài ghi lên làm nguồn của notebook trước, rồi tạo từng video theo thứ tự, mỗi lần dán một prompt vào ô tùy chỉnh của Video Overview.
 
 ## Cài đặt
 

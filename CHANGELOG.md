@@ -2,6 +2,12 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.6
+- **videoOverviewPrompt** theo cách viết của SlideWright: mô tả skill viết lại theo khả năng mới, phần mở đầu nêu mục tiêu, đường dẫn `references/`, tạo danh sách công việc và bảng tệp tham chiếu theo bước; tiêu đề bước dạng `## Bước n — …`.
+- Bước 1 đọc tài liệu theo bảng định dạng (văn bản dán, `.docx`, `.pdf`, PDF quét/ảnh chụp, định dạng khác); bỏ tham chiếu tới skill "file-reading" không có trong plugin.
+- Kết quả nhắc người dùng tải bài ghi gốc lên làm nguồn của notebook trước khi dán prompt.
+- README cập nhật tính năng và cách dùng bộ prompt.
+
 ## 0.3.5
 - **videoOverviewPrompt**: cập nhật cấu hình theo giao diện Gemini Notebook hiện tại (`references/gemini-settings.md`):
   - Format: Explainer; không chọn Short (dọc, khoảng 60 giây, một ý); Cinematic chỉ khi có gói Pro/Ultra;
