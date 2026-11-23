@@ -2,6 +2,10 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.2.2
+- Quy trình phát hành: khi không gắn được tag cho một commit cũ (GitHub không cho token của Actions tạo ref trỏ tới commit có workflow khác bản hiện tại), workflow thử tạo tag qua API, nếu vẫn không được thì báo cảnh báo và tiếp tục với các phiên bản còn lại thay vì dừng hẳn.
+- Hỗ trợ secret tuỳ chọn `RELEASE_TOKEN` (PAT có quyền contents và workflows) để gắn tag cho mọi commit đổi phiên bản.
+
 ## 0.2.1
 - Quy trình phát hành tự động (`.github/workflows/release.yaml`) làm lại theo SlideWright:
   - mỗi lần đẩy lên nhánh mặc định, mọi commit có đổi `version` trong `plugin.json` mà chưa có tag được gắn tag `vX.Y.Z`, kể cả các phiên bản cũ (0.1.0 → 0.2.0);
