@@ -2,6 +2,12 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.0
+Nâng cấp **videoOverviewPrompt**: mỗi video đi sâu một cụm nguyên lý thay vì một video ôm cả bài (video nói chung chung vì nội dung bị dàn mỏng).
+- Thêm bước chia bài thành các cụm nguyên lý (`references/series-planning.md`): một cụm một cơ chế, sắp theo thứ tự xem, phủ kín đề cương, không chia cho đủ số.
+- Mỗi prompt có câu giới hạn phạm vi "Video này CHỈ giải thích [cơ chế X]… bỏ qua các phần khác"; khung prompt chuyển sang `references/prompt-template.md`.
+- Kết quả là bảng kế hoạch cùng bộ prompt đánh số `Video n/N` theo thứ tự xem.
+
 ## 0.2.2
 - Quy trình phát hành: khi không gắn được tag cho một commit cũ (GitHub không cho token của Actions tạo ref trỏ tới commit có workflow khác bản hiện tại), workflow thử tạo tag qua API, nếu vẫn không được thì báo cảnh báo và tiếp tục với các phiên bản còn lại thay vì dừng hẳn.
 - Hỗ trợ secret tuỳ chọn `RELEASE_TOKEN` (PAT có quyền contents và workflows) để gắn tag cho mọi commit đổi phiên bản.

@@ -1,7 +1,7 @@
 {
   "displayName": "FrameForge - Studio",
   "name": "frameforge-studio",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "FrameForge - Studio — Bộ công cụ làm video bằng tiếng Việt: soạn prompt điều hướng cho Video Overview của Gemini Notebook (NotebookLM) để tạo video bài giảng.",
   "author": {
     "name": "NexoZegknost"
