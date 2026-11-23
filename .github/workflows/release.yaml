@@ -86,7 +86,7 @@ jobs:
             git show "$1:$MANIFEST" 2>/dev/null | jq -r '.version // empty' 2>/dev/null || true
           }
 
-          for SHA in $(git log --reverse --first-parent --format=%H -- "$MANIFEST"); do
+          for SHA in $(git log --reverse --format=%H -- "$MANIFEST"); do
             VERSION=$(version_at "$SHA")
             [ -n "$VERSION" ] || continue
             PREV_VERSION=$(git rev-parse -q --verify "$SHA^" >/dev/null && version_at "$SHA^" || true)

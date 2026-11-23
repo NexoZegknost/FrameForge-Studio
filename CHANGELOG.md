@@ -2,6 +2,9 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.7
+- Quy trình phát hành quét cả các commit nằm trong nhánh được gộp (merge) vào nhánh mặc định, để mỗi commit đổi phiên bản trong pull request đều được gắn tag và phát hành, không chỉ phiên bản cuối.
+
 ## 0.3.6
 - **videoOverviewPrompt** theo cách viết của SlideWright: mô tả skill viết lại theo khả năng mới, phần mở đầu nêu mục tiêu, đường dẫn `references/`, tạo danh sách công việc và bảng tệp tham chiếu theo bước; tiêu đề bước dạng `## Bước n — …`.
 - Bước 1 đọc tài liệu theo bảng định dạng (văn bản dán, `.docx`, `.pdf`, PDF quét/ảnh chụp, định dạng khác); bỏ tham chiếu tới skill "file-reading" không có trong plugin.
