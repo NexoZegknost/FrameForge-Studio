@@ -2,6 +2,10 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.1
+- **videoOverviewPrompt**: thân prompt đi theo chuỗi giải thích năm bước — cấu tạo → đầu vào → từng bước biến đổi kèm lý do → kết quả → điều gì thay đổi khi đổi một yếu tố — thay cho danh sách tên mục (khiến video nói mỗi mục vài câu).
+- `references/prompt-template.md`: bảng hướng dẫn điền từng bước và nơi lấy nội dung trong tài liệu; chuỗi tương ứng cho bài văn học, lịch sử, xã hội.
+
 ## 0.3.0
 Nâng cấp **videoOverviewPrompt**: mỗi video đi sâu một cụm nguyên lý thay vì một video ôm cả bài (video nói chung chung vì nội dung bị dàn mỏng).
 - Thêm bước chia bài thành các cụm nguyên lý (`references/series-planning.md`): một cụm một cơ chế, sắp theo thứ tự xem, phủ kín đề cương, không chia cho đủ số.

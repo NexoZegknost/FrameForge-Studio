@@ -40,6 +40,13 @@ Mỗi cụm là **một nguyên lý, cơ chế hoặc quy trình hoàn chỉnh**
 ### Bước 4: Soạn prompt cho từng video
 Mỗi cụm một prompt riêng, theo khung trong `references/prompt-template.md`, điền phần [ ] theo nội dung thực tế. Mỗi prompt phải có câu giới hạn phạm vi: **"Video này CHỈ giải thích [cơ chế X] trong tài liệu; bỏ qua các phần khác."**
 
+Phần thân prompt đi theo **chuỗi giải thích năm bước**, không liệt kê tên mục:
+1. Cấu tạo / các thành phần tham gia
+2. Đầu vào (điều kiện ban đầu)
+3. Từng bước biến đổi, kèm lý do vì sao diễn ra như vậy
+4. Đầu ra / kết quả
+5. Điều gì thay đổi nếu thay đổi một yếu tố (phản ví dụ, trường hợp đặc biệt)
+
 Không chép nguyên văn bài ghi vào prompt — Gemini Notebook tự lấy nội dung chi tiết từ nguồn (source) đã có trong notebook. Prompt chỉ nêu phạm vi và cách giải thích.
 
 ### Bước 5: Gợi ý cấu hình khác
