@@ -2,6 +2,52 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.8
+- Sửa quy trình phát hành sau sự cố tag đẩy tay chạy workflow cũ: workflow cũ đã tự thêm các commit `chore(release)` hạ phiên bản trên `main` và dời tag v0.1.2, v0.2.0, v0.2.1 sang các commit đó.
+  - Tag đẩy tay trỏ đúng commit đã mang số phiên bản thì chỉ phát hành, không sửa nhánh; không bao giờ hạ số phiên bản của nhánh mặc định.
+  - Bỏ qua commit `chore(release)` khi tìm commit đổi phiên bản.
+  - Đẩy mọi tag mới trong một lần (luôn quá 3 tag, thêm tag tạm nếu cần) để GitHub không kích hoạt workflow cũ nằm trong các commit được gắn tag.
+  - Chạy tay với ô `retag` để dời tag về đúng commit đổi phiên bản và dựng lại bản phát hành.
+
+## 0.3.7
+- Quy trình phát hành quét cả các commit nằm trong nhánh được gộp (merge) vào nhánh mặc định, để mỗi commit đổi phiên bản trong pull request đều được gắn tag và phát hành, không chỉ phiên bản cuối.
+
+## 0.3.6
+- **videoOverviewPrompt** theo cách viết của SlideWright: mô tả skill viết lại theo khả năng mới, phần mở đầu nêu mục tiêu, đường dẫn `references/`, tạo danh sách công việc và bảng tệp tham chiếu theo bước; tiêu đề bước dạng `## Bước n — …`.
+- Bước 1 đọc tài liệu theo bảng định dạng (văn bản dán, `.docx`, `.pdf`, PDF quét/ảnh chụp, định dạng khác); bỏ tham chiếu tới skill "file-reading" không có trong plugin.
+- Kết quả nhắc người dùng tải bài ghi gốc lên làm nguồn của notebook trước khi dán prompt.
+- README cập nhật tính năng và cách dùng bộ prompt.
+
+## 0.3.5
+- **videoOverviewPrompt**: cập nhật cấu hình theo giao diện Gemini Notebook hiện tại (`references/gemini-settings.md`):
+  - Format: Explainer; không chọn Short (dọc, khoảng 60 giây, một ý); Cinematic chỉ khi có gói Pro/Ultra;
+  - Visual Style theo danh sách mới (Whiteboard, Watercolor, Papercraft, Anime, Retro Print, Heritage…), nội dung kỹ thuật ưu tiên Whiteboard, bỏ "Classic";
+  - "giọng miền Nam" đổi thành "văn phong gần gũi kiểu Nam Bộ"; báo trước giọng đọc tiếng Việt do hệ thống cố định.
+- Nhắc hạn mức khoảng 3 Video Overview/ngày của gói miễn phí khi bộ prompt nhiều video hơn, kèm gợi ý chia ngày.
+- Nêu giới hạn không sửa được bằng prompt (chỉ slide và lời thuyết minh, hình AI có thể sai chi tiết) và gợi ý hoạt hình do Claude dựng hoặc Manim.
+
+## 0.3.4
+- **videoOverviewPrompt**: mỗi prompt có khối "Ràng buộc" chặn kiểu nói chung chung — vào thẳng vấn đề sau tối đa 1–2 câu, cấm câu sáo rỗng, mỗi ý gắn với chi tiết/số liệu/thuật ngữ trong tài liệu, ví dụ phải có đối tượng, số liệu, kết quả, giải thích thuật ngữ ngay lần đầu xuất hiện.
+- Thêm bước tự kiểm tra bộ prompt trước khi trình bày (phạm vi một cơ chế, đủ chuỗi năm bước, đủ điểm neo, hình minh họa, ràng buộc, phủ kín đề cương).
+
+## 0.3.3
+- **videoOverviewPrompt**: mỗi prompt có khối "Hình minh họa" để hình bám kỹ thuật thay vì hình trang trí — sơ đồ khối có mũi tên chỉ chiều tác động, hình trạng thái trước/sau từng bước, bảng so sánh, công thức kèm chú thích đại lượng và đơn vị; dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu.
+- Thêm `references/visual-guidelines.md`: chọn loại hình theo nội dung (cả bài văn học, lịch sử), quy tắc chung và khối mẫu đưa vào prompt.
+
+## 0.3.2
+- **videoOverviewPrompt**: Bước 2 rút thêm **điểm neo bắt buộc giải thích** — quy trình, công thức/định luật/quy tắc, số liệu/thông số, hình vẽ/sơ đồ (mô tả lại bằng lời vì Gemini Notebook có thể không đọc được hình trong PDF quét); giữ đúng tên gọi, ký hiệu, đơn vị và ghi vị trí trong tài liệu.
+- Mỗi prompt có dòng "Bắt buộc giải thích: …" cho điểm neo của cụm; hướng dẫn chi tiết trong `references/anchor-extraction.md`.
+
+## 0.3.1
+- **videoOverviewPrompt**: thân prompt đi theo chuỗi giải thích năm bước — cấu tạo → đầu vào → từng bước biến đổi kèm lý do → kết quả → điều gì thay đổi khi đổi một yếu tố — thay cho danh sách tên mục (khiến video nói mỗi mục vài câu).
+- `references/prompt-template.md`: bảng hướng dẫn điền từng bước và nơi lấy nội dung trong tài liệu; chuỗi tương ứng cho bài văn học, lịch sử, xã hội.
+
+## 0.3.0
+Nâng cấp **videoOverviewPrompt**: mỗi video đi sâu một cụm nguyên lý thay vì một video ôm cả bài (video nói chung chung vì nội dung bị dàn mỏng).
+- Thêm bước chia bài thành các cụm nguyên lý (`references/series-planning.md`): một cụm một cơ chế, sắp theo thứ tự xem, phủ kín đề cương, không chia cho đủ số.
+- Mỗi prompt có câu giới hạn phạm vi "Video này CHỈ giải thích [cơ chế X]… bỏ qua các phần khác"; khung prompt chuyển sang `references/prompt-template.md`.
+- Kết quả là bảng kế hoạch cùng bộ prompt đánh số `Video n/N` theo thứ tự xem.
+
 ## 0.2.2
 - Quy trình phát hành: khi không gắn được tag cho một commit cũ (GitHub không cho token của Actions tạo ref trỏ tới commit có workflow khác bản hiện tại), workflow thử tạo tag qua API, nếu vẫn không được thì báo cảnh báo và tiếp tục với các phiên bản còn lại thay vì dừng hẳn.
 - Hỗ trợ secret tuỳ chọn `RELEASE_TOKEN` (PAT có quyền contents và workflows) để gắn tag cho mọi commit đổi phiên bản.
