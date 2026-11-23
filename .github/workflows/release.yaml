@@ -1,69 +1,126 @@
 name: Release
 
+# Hai cách phát hành:
+# 1. Tự động: mỗi lần đẩy lên nhánh mặc định, mọi commit có đổi "version" trong
+#    .claude-plugin/plugin.json mà chưa có tag sẽ được gắn tag vX.Y.Z, đóng gói
+#    tệp .plugin và đăng bản phát hành (ghi chú lấy từ mục tương ứng trong CHANGELOG).
+# 2. Thủ công: đẩy tag vX.Y.Z; số phiên bản được đồng bộ vào plugin.json, README,
+#    CHANGELOG (tự sinh mục từ commit nếu chưa viết), commit lại và dời tag.
+
 on:
   push:
+    branches: ["**"]
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  PLUGIN_NAME: frameforge-studio
+  DISPLAY_NAME: FrameForge - Studio
+  MANIFEST: .claude-plugin/plugin.json
+
 jobs:
   release:
+    if: github.ref_type == 'tag' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
 
-      - name: Đồng bộ số phiên bản
+      - name: Cấu hình git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --tags --force
+
+      - name: Đồng bộ số phiên bản theo tag đẩy tay
+        if: github.ref_type == 'tag'
         env:
           TAG: ${{ github.ref_name }}
+          BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           VERSION="${TAG#v}"
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
           # 1. plugin.json
-          jq --arg v "$VERSION" '.version = $v' .claude-plugin/plugin.json > tmp.json
-          mv tmp.json .claude-plugin/plugin.json
+          jq --arg v "$VERSION" '.version = $v' "$MANIFEST" > tmp.json
+          mv tmp.json "$MANIFEST"
 
           # 2. README
           sed -i -E "s/(Phiên bản hiện tại: \*\*)[^*]+(\*\*)/\1$VERSION\2/" README.md
 
-          # 3. CHANGELOG: nếu bạn chưa tự viết mục này thì sinh từ các commit
+          # 3. CHANGELOG: nếu chưa tự viết mục này thì sinh từ các commit
           if ! grep -q "^## $VERSION\$" CHANGELOG.md; then
-            PREV=$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || true)
-            RANGE="${PREV:+$PREV..}$TAG"
+            PREV=$(git describe --tags --abbrev=0 --exclude "$TAG" 2>/dev/null || true)
+            RANGE="${PREV:+$PREV..}HEAD"
             { echo "## $VERSION"
               git log "$RANGE" --no-merges --pretty='- %s' | grep -v 'chore(release)'
               echo; } > section.md
             awk 'FNR==NR{s=s $0 "\n"; next} !d && /^## /{printf "%s", s; d=1} {print}' \
               section.md CHANGELOG.md > tmp.md
             mv tmp.md CHANGELOG.md
+            rm section.md
           fi
 
-          # ghi chú phát hành = mục của phiên bản này
-          awk -v v="## $VERSION" '$0==v{f=1;next} /^## /{f=0} f' CHANGELOG.md > notes.md
-
-      - name: Commit lại và dời tag về commit mới
-        env:
-          TAG: ${{ github.ref_name }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .claude-plugin/plugin.json README.md CHANGELOG.md
+          git add "$MANIFEST" README.md CHANGELOG.md
           git diff --cached --quiet || git commit -m "chore(release): $VERSION"
-          git push origin HEAD:main
-          git tag -f "$TAG"
-          git push -f origin "$TAG"
+          git push origin "HEAD:$BRANCH"
+          git tag -f -a "$TAG" -m "$DISPLAY_NAME $TAG"
+          git push -f origin "refs/tags/$TAG"
 
-      - name: Đóng gói và phát hành
+      - name: Gắn tag các commit đổi phiên bản và phát hành
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          zip -r "frameforge-studio-$VERSION.plugin" . -x ".git/*" ".github/*" "*.patch" notes.md section.md
-          FLAGS=""
-          case "$VERSION" in *-*) FLAGS="--prerelease" ;; esac
-          gh release create "v$VERSION" "frameforge-studio-$VERSION.plugin" \
-            --title "FrameForge - Studio v$VERSION" \
-            --notes-file notes.md $FLAGS
+          version_at() {
+            git show "$1:$MANIFEST" 2>/dev/null | jq -r '.version // empty' 2>/dev/null || true
+          }
+
+          for SHA in $(git log --reverse --first-parent --format=%H -- "$MANIFEST"); do
+            VERSION=$(version_at "$SHA")
+            [ -n "$VERSION" ] || continue
+            PREV_VERSION=$(git rev-parse -q --verify "$SHA^" >/dev/null && version_at "$SHA^" || true)
+            [ "$VERSION" != "$PREV_VERSION" ] || continue
+            TAG="v$VERSION"
+
+            # Gắn tag nếu commit đổi phiên bản này chưa có tag
+            if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+              git tag -a "$TAG" "$SHA" -m "$DISPLAY_NAME $TAG"
+              git push origin "refs/tags/$TAG"
+              echo "Đã gắn tag $TAG cho $SHA"
+            fi
+
+            # Phát hành nếu tag chưa có bản phát hành
+            if gh release view "$TAG" >/dev/null 2>&1; then
+              continue
+            fi
+
+            TAG_SHA=$(git rev-list -n 1 "$TAG")
+            BUILD=$(mktemp -d)
+            git archive "$TAG_SHA" | tar -x -C "$BUILD"
+            PACKAGE="$PWD/$PLUGIN_NAME-$VERSION.plugin"
+            (cd "$BUILD" && zip -qr "$PACKAGE" . -x ".github/*" "*.patch")
+
+            # Ghi chú phát hành = mục của phiên bản này trong CHANGELOG
+            git show "$TAG_SHA:CHANGELOG.md" 2>/dev/null \
+              | awk -v v="## $VERSION" '$0==v{f=1;next} /^## /{f=0} f' > notes.md || true
+            if ! grep -q '[^[:space:]]' notes.md; then
+              git log -1 --format='- %s' "$TAG_SHA" > notes.md
+            fi
+
+            FLAGS=""
+            case "$VERSION" in *-*) FLAGS="--prerelease" ;; esac
+            gh release create "$TAG" "$PACKAGE" \
+              --verify-tag \
+              --title "$DISPLAY_NAME $TAG" \
+              --notes-file notes.md $FLAGS
+            rm -rf "$BUILD" "$PACKAGE" notes.md
+            echo "Đã phát hành $TAG"
+          done

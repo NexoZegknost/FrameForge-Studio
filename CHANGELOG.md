@@ -1,6 +1,13 @@
 # Lịch sử phiên bản
 
-Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README.
+Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
+
+## 0.2.1
+- Quy trình phát hành tự động (`.github/workflows/release.yaml`) làm lại theo SlideWright:
+  - mỗi lần đẩy lên nhánh mặc định, mọi commit có đổi `version` trong `plugin.json` mà chưa có tag được gắn tag `vX.Y.Z`, kể cả các phiên bản cũ (0.1.0 → 0.2.0);
+  - mỗi tag chưa có bản phát hành được đóng gói thành `frameforge-studio-X.Y.Z.plugin` và đăng lên mục Releases, ghi chú lấy từ mục tương ứng trong CHANGELOG;
+  - vẫn phát hành được bằng cách đẩy tag tay: số phiên bản được đồng bộ vào `plugin.json`, README, CHANGELOG (tự sinh mục từ commit nếu chưa viết), commit `chore(release)` rồi dời tag;
+  - không phụ thuộc tên nhánh `main`, dùng nhánh mặc định của kho; số phiên bản có hậu tố (`-beta.N`) được đánh dấu là bản thử nghiệm.
 
 ## 0.2.0
 Thêm skill đầu tiên: **videoOverviewPrompt** (`video-overview-prompt`), chuyển từ skill cá nhân `gemini-notebook-video-prompt`.

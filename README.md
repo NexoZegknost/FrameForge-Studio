@@ -2,7 +2,7 @@
 
 Plugin cho Claude giúp làm video tiếng Việt. Gói plugin hiện có một skill: **videoOverviewPrompt** (prompt cho Video Overview của Gemini Notebook).
 
-Phiên bản hiện tại: **0.2.0** · [Lịch sử thay đổi](CHANGELOG.md)
+Phiên bản hiện tại: **0.2.1** · [Lịch sử thay đổi](CHANGELOG.md)
 
 ## Tính năng
 
@@ -36,7 +36,7 @@ Sau khi cài, mở một phiên trò chuyện mới để plugin được nạp.
 ```
 .claude-plugin/        manifest plugin và marketplace
 skills/<skill-name>/   mỗi skill một thư mục (SKILL.md, references/, scripts/, assets/)
-.github/workflows/      phát hành tự động khi đẩy tag vX.Y.Z
+.github/workflows/      phát hành tự động (tag vX.Y.Z, tệp .plugin, Releases)
 CHANGELOG.md           lịch sử phiên bản
 ```
 
