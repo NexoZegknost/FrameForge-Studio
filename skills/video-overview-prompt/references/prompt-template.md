@@ -25,7 +25,7 @@ Hình minh họa:
 - Công thức hiển thị kèm chú thích từng đại lượng.
 
 Ràng buộc:
-- Trình bày bằng giọng miền Nam (Nam Bộ), văn phong gần gũi như đang giảng trên lớp.
+- Văn phong gần gũi kiểu Nam Bộ, như đang giảng trên lớp.
 - Vào thẳng vấn đề sau tối đa 1–2 câu mở đầu; không mở bài dài dòng.
 - Không dùng câu sáo rỗng như "đây là vấn đề rất quan trọng", "có vai trò to lớn".
 - Mỗi ý gắn với một chi tiết, số liệu hoặc thuật ngữ cụ thể trong tài liệu.

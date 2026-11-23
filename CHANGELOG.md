@@ -2,6 +2,14 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.5
+- **videoOverviewPrompt**: cập nhật cấu hình theo giao diện Gemini Notebook hiện tại (`references/gemini-settings.md`):
+  - Format: Explainer; không chọn Short (dọc, khoảng 60 giây, một ý); Cinematic chỉ khi có gói Pro/Ultra;
+  - Visual Style theo danh sách mới (Whiteboard, Watercolor, Papercraft, Anime, Retro Print, Heritage…), nội dung kỹ thuật ưu tiên Whiteboard, bỏ "Classic";
+  - "giọng miền Nam" đổi thành "văn phong gần gũi kiểu Nam Bộ"; báo trước giọng đọc tiếng Việt do hệ thống cố định.
+- Nhắc hạn mức khoảng 3 Video Overview/ngày của gói miễn phí khi bộ prompt nhiều video hơn, kèm gợi ý chia ngày.
+- Nêu giới hạn không sửa được bằng prompt (chỉ slide và lời thuyết minh, hình AI có thể sai chi tiết) và gợi ý hoạt hình do Claude dựng hoặc Manim.
+
 ## 0.3.4
 - **videoOverviewPrompt**: mỗi prompt có khối "Ràng buộc" chặn kiểu nói chung chung — vào thẳng vấn đề sau tối đa 1–2 câu, cấm câu sáo rỗng, mỗi ý gắn với chi tiết/số liệu/thuật ngữ trong tài liệu, ví dụ phải có đối tượng, số liệu, kết quả, giải thích thuật ngữ ngay lần đầu xuất hiện.
 - Thêm bước tự kiểm tra bộ prompt trước khi trình bày (phạm vi một cơ chế, đủ chuỗi năm bước, đủ điểm neo, hình minh họa, ràng buộc, phủ kín đề cương).

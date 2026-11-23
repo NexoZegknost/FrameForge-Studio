@@ -77,17 +77,18 @@ Trước khi trình bày, rà từng prompt; mục nào chưa đạt thì sửa 
 - [ ] Khối "Ràng buộc" giữ nguyên; bản thân prompt cũng không có câu sáo rỗng.
 - [ ] Cả bộ phủ kín đề cương, mỗi mục thuộc đúng một video, thứ tự xem hợp lý.
 
-### Bước 6: Gợi ý cấu hình khác
-Luôn kèm theo bộ prompt các gợi ý sau (dùng chung cho cả bộ):
-- **Format**: Explainer (không chọn Brief — vì cần chi tiết đầy đủ)
-- **Visual Style**: chọn theo tính chất nội dung
-  - Nội dung văn học/cảm xúc/lịch sử → Heritage hoặc Watercolor
-  - Nội dung khoa học/kỹ thuật/logic → Whiteboard hoặc Classic
-  - Không chắc → Whiteboard (phong cách giáo dục trung tính)
-- **Language**: Tiếng Việt
+### Bước 6: Gợi ý cấu hình
+Dùng chung cho cả bộ; chi tiết và lý do trong `references/gemini-settings.md`:
+- **Format**: Explainer. Không chọn Short (dọc, khoảng 60 giây, chỉ một ý). Cinematic chỉ khi người dùng có gói Pro/Ultra.
+- **Visual Style**: nội dung kỹ thuật, khoa học ưu tiên Whiteboard; văn học, lịch sử chọn Heritage hoặc Watercolor; không chắc thì Whiteboard. Nhắc người dùng kiểm tra lại danh sách trong giao diện.
+- **Language**: Tiếng Việt.
 
 ### Bước 7: Trình bày kết quả
 Đưa cho người dùng:
 1. Bảng kế hoạch bộ video: số thứ tự, tên cụm, các mục đề cương thuộc cụm.
 2. **Bộ prompt đánh số theo thứ tự xem** — mỗi video một khối code riêng, có tiêu đề `Video n/N — [tên cụm]` để copy dễ dàng.
 3. Gợi ý cấu hình (Format, Visual Style kèm lý do ngắn gọn, Language).
+4. Lưu ý ngắn:
+   - giọng đọc tiếng Việt do hệ thống cố định, prompt chỉ đổi được văn phong, nên giọng có thể không phải giọng miền Nam;
+   - bộ có nhiều hơn 3 video thì nhắc hạn mức khoảng 3 Video Overview/ngày của gói miễn phí và gợi ý chia ngày;
+   - Video Overview chỉ dựng slide có hình và lời thuyết minh, không có hoạt hình từng bước; cơ chế cần thấy chuyển động thật thì gợi ý hoạt hình do Claude dựng hoặc Manim (toán, lý, hoá).
