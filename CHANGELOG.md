@@ -2,6 +2,10 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.2
+- **videoOverviewPrompt**: Bước 2 rút thêm **điểm neo bắt buộc giải thích** — quy trình, công thức/định luật/quy tắc, số liệu/thông số, hình vẽ/sơ đồ (mô tả lại bằng lời vì Gemini Notebook có thể không đọc được hình trong PDF quét); giữ đúng tên gọi, ký hiệu, đơn vị và ghi vị trí trong tài liệu.
+- Mỗi prompt có dòng "Bắt buộc giải thích: …" cho điểm neo của cụm; hướng dẫn chi tiết trong `references/anchor-extraction.md`.
+
 ## 0.3.1
 - **videoOverviewPrompt**: thân prompt đi theo chuỗi giải thích năm bước — cấu tạo → đầu vào → từng bước biến đổi kèm lý do → kết quả → điều gì thay đổi khi đổi một yếu tố — thay cho danh sách tên mục (khiến video nói mỗi mục vài câu).
 - `references/prompt-template.md`: bảng hướng dẫn điền từng bước và nơi lấy nội dung trong tài liệu; chuỗi tương ứng cho bài văn học, lịch sử, xã hội.

@@ -15,6 +15,9 @@ Cách giải thích (theo đúng thứ tự):
 4. Kết quả / đầu ra: [...]
 5. Nếu thay đổi [yếu tố] thì điều gì xảy ra: [phản ví dụ, trường hợp đặc biệt]
 
+Bắt buộc giải thích: [quy trình, công thức kèm ý nghĩa từng đại lượng, số liệu kèm đơn vị,
+hình vẽ mô tả bằng lời — rút từ tài liệu, xem references/anchor-extraction.md]
+
 Yêu cầu:
 - Trình bày bằng giọng miền Nam (Nam Bộ), văn phong gần gũi như một buổi giảng bài thực tế.
 - Với mỗi bước, đưa ra ví dụ minh họa cụ thể, dễ hình dung.

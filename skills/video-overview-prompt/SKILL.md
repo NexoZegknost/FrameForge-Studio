@@ -24,11 +24,18 @@ Biến một bài ghi/giáo án chi tiết thành một **bộ steering prompt**
 - Nếu người dùng tải lên file (.docx, .pdf, ...) → dùng skill đọc file tương ứng (docx / pdf / file-reading) để trích xuất toàn bộ nội dung trước khi làm tiếp. KHÔNG suy đoán nội dung khi chưa đọc file.
 - Nếu bài ghi quá sơ sài để rút ra đề cương rõ ràng, hỏi lại người dùng thay vì tự bịa nội dung.
 
-### Bước 2: Trích xuất đề cương & chủ đề
+### Bước 2: Trích xuất đề cương, chủ đề và điểm neo
 Đọc kỹ bài ghi, xác định:
 - Tên chủ đề / môn học chính (để điền vào vai "giảng viên [môn]")
 - Đề cương các mục/luận điểm chính, theo đúng thứ tự trình bày trong bài ghi
 - Các ví dụ/dẫn chứng đã có sẵn trong bài (nếu có), để prompt yêu cầu giữ lại và bổ sung thêm
+- **Điểm neo bắt buộc giải thích** (cách rút: `references/anchor-extraction.md`):
+  - quy trình, các bước vận hành;
+  - công thức, định luật, quy tắc;
+  - số liệu, thông số kỹ thuật;
+  - hình vẽ, sơ đồ có sẵn trong tài liệu — mô tả lại bằng lời, vì Gemini Notebook có thể không đọc được hình trong file PDF quét.
+
+  Giữ đúng tên gọi, ký hiệu, đơn vị như tài liệu và ghi kèm vị trí (mục, trang, số hình).
 
 ### Bước 3: Chia bài thành các cụm nguyên lý
 Mỗi cụm là **một nguyên lý, cơ chế hoặc quy trình hoàn chỉnh** mà một video vài phút giải thích trọn vẹn được. Quy tắc chia: xem `references/series-planning.md`. Tóm tắt:
@@ -36,6 +43,7 @@ Mỗi cụm là **một nguyên lý, cơ chế hoặc quy trình hoàn chỉnh**
 - Sắp theo **thứ tự xem**: khái niệm nền và cụm được cụm khác dùng lại đứng trước.
 - Mỗi mục trong đề cương thuộc đúng một cụm; mục chỉ mang tính dẫn nhập thì ghép vào cụm đầu tiên dùng đến nó.
 - Bài chỉ có một nguyên lý → một video; không chia nhỏ cho đủ số.
+- Mỗi điểm neo gán vào cụm đầu tiên dùng đến nó.
 
 ### Bước 4: Soạn prompt cho từng video
 Mỗi cụm một prompt riêng, theo khung trong `references/prompt-template.md`, điền phần [ ] theo nội dung thực tế. Mỗi prompt phải có câu giới hạn phạm vi: **"Video này CHỈ giải thích [cơ chế X] trong tài liệu; bỏ qua các phần khác."**
@@ -46,6 +54,8 @@ Phần thân prompt đi theo **chuỗi giải thích năm bước**, không li�
 3. Từng bước biến đổi, kèm lý do vì sao diễn ra như vậy
 4. Đầu ra / kết quả
 5. Điều gì thay đổi nếu thay đổi một yếu tố (phản ví dụ, trường hợp đặc biệt)
+
+Sau chuỗi giải thích, mỗi prompt có dòng **"Bắt buộc giải thích: …"** liệt kê các điểm neo của cụm.
 
 Không chép nguyên văn bài ghi vào prompt — Gemini Notebook tự lấy nội dung chi tiết từ nguồn (source) đã có trong notebook. Prompt chỉ nêu phạm vi và cách giải thích.
 
