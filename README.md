@@ -2,7 +2,7 @@
 
 Plugin cho Claude giúp làm video tiếng Việt. Các skill trong gói được bổ sung dần theo từng phiên bản.
 
-Phiên bản hiện tại: **0.1.1** · [Lịch sử thay đổi](CHANGELOG.md)
+Phiên bản hiện tại: **0.1.2** · [Lịch sử thay đổi](CHANGELOG.md)
 
 ## Tính năng
 
@@ -26,6 +26,7 @@ Sau khi cài, mở một phiên trò chuyện mới để plugin được nạp.
 ```
 .claude-plugin/        manifest plugin và marketplace
 skills/<skill-name>/   mỗi skill một thư mục (SKILL.md, references/, scripts/, assets/)
+.github/workflows/      phát hành tự động khi đẩy tag vX.Y.Z
 CHANGELOG.md           lịch sử phiên bản
 ```
 
