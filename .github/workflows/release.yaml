@@ -4,14 +4,26 @@ name: Release
 # 1. Tự động: mỗi lần đẩy lên nhánh mặc định, mọi commit có đổi "version" trong
 #    .claude-plugin/plugin.json mà chưa có tag sẽ được gắn tag vX.Y.Z, đóng gói
 #    tệp .plugin và đăng bản phát hành (ghi chú lấy từ mục tương ứng trong CHANGELOG).
-# 2. Thủ công: đẩy tag vX.Y.Z; số phiên bản được đồng bộ vào plugin.json, README,
-#    CHANGELOG (tự sinh mục từ commit nếu chưa viết), commit lại và dời tag.
+# 2. Thủ công: đẩy tag vX.Y.Z lên một commit chưa mang số phiên bản đó; số phiên bản
+#    được đồng bộ vào plugin.json, README, CHANGELOG, commit lại và dời tag.
+#    Tag trỏ đúng commit đã mang số phiên bản đó thì chỉ phát hành, không sửa nhánh.
+#
+# Chạy tay (workflow_dispatch) với ô "retag" (ví dụ: 0.1.2 0.2.0) để dời các tag đó
+# về đúng commit đổi phiên bản và dựng lại bản phát hành.
+#
+# Secret tuỳ chọn RELEASE_TOKEN (PAT có quyền contents + workflows) để gắn được tag
+# cho cả commit cũ có workflow khác bản hiện tại.
 
 on:
   push:
     branches: ["**"]
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      retag:
+        description: "Các phiên bản cần dời tag về đúng commit đổi phiên bản, cách nhau bởi dấu cách (ví dụ: 0.1.2 0.2.0)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -34,8 +46,6 @@ jobs:
         with:
           ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
-          # Tuỳ chọn: secret RELEASE_TOKEN (PAT có quyền contents + workflows) để gắn
-          # được tag cho cả commit cũ có workflow khác bản hiện tại.
           token: ${{ secrets.RELEASE_TOKEN || github.token }}
 
       - name: Cấu hình git
@@ -51,6 +61,21 @@ jobs:
           BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           VERSION="${TAG#v}"
+          TAGGED_VERSION=$(git show "$TAG:$MANIFEST" | jq -r '.version')
+          CURRENT_VERSION=$(jq -r '.version' "$MANIFEST")
+
+          # Tag đã trỏ đúng commit mang số phiên bản này: chỉ phát hành
+          if [ "$TAGGED_VERSION" = "$VERSION" ]; then
+            echo "Tag $TAG trỏ đúng commit phiên bản $VERSION, không sửa nhánh."
+            exit 0
+          fi
+
+          # Không bao giờ hạ số phiên bản của nhánh mặc định
+          if [ "$(printf '%s\n%s\n' "$CURRENT_VERSION" "$VERSION" | sort -V | tail -1)" != "$VERSION" ] \
+             || [ "$CURRENT_VERSION" = "$VERSION" ]; then
+            echo "::error::Tag $TAG ($VERSION) không mới hơn phiên bản hiện tại $CURRENT_VERSION của $BRANCH; bỏ qua để không hạ phiên bản."
+            exit 1
+          fi
 
           # 1. plugin.json
           jq --arg v "$VERSION" '.version = $v' "$MANIFEST" > tmp.json
@@ -81,39 +106,76 @@ jobs:
       - name: Gắn tag các commit đổi phiên bản và phát hành
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN || github.token }}
+          RETAG: ${{ github.event.inputs.retag }}
         run: |
           version_at() {
             git show "$1:$MANIFEST" 2>/dev/null | jq -r '.version // empty' 2>/dev/null || true
           }
 
+          # 1. Tìm commit đổi phiên bản (bỏ qua commit chore(release) tự động)
+          declare -A BUMP
+          ORDER=()
           for SHA in $(git log --reverse --format=%H -- "$MANIFEST"); do
+            case "$(git log -1 --format=%s "$SHA")" in "chore(release):"*) continue ;; esac
             VERSION=$(version_at "$SHA")
             [ -n "$VERSION" ] || continue
             PREV_VERSION=$(git rev-parse -q --verify "$SHA^" >/dev/null && version_at "$SHA^" || true)
             [ "$VERSION" != "$PREV_VERSION" ] || continue
-            TAG="v$VERSION"
+            [ -z "${BUMP[$VERSION]:-}" ] || continue
+            BUMP[$VERSION]=$SHA
+            ORDER+=("$VERSION")
+          done
 
-            # Gắn tag nếu commit đổi phiên bản này chưa có tag
+          # 2. Gắn tag còn thiếu và dời các tag được yêu cầu
+          NEW_TAGS=()
+          REBUILD=()
+          for VERSION in "${ORDER[@]}"; do
+            TAG="v$VERSION"; SHA=${BUMP[$VERSION]}
             if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
               git tag -a "$TAG" "$SHA" -m "$DISPLAY_NAME $TAG"
-              # GITHUB_TOKEN không được tạo ref trỏ tới commit có workflow khác
-              # bản hiện tại; khi đó cần gắn tag tay rồi chạy lại workflow này.
-              if ! git push origin "refs/tags/$TAG"; then
-                git tag -d "$TAG"
-                # Thử tạo tag qua API của GitHub
-                if ! gh api "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/$TAG" -f sha="$SHA" >/dev/null; then
-                  echo "::warning::Không gắn được tag $TAG cho $SHA (commit có workflow khác bản hiện tại). Thêm secret RELEASE_TOKEN hoặc đẩy tag này bằng tay rồi chạy lại workflow."
-                  continue
-                fi
-                git fetch -q origin "refs/tags/$TAG:refs/tags/$TAG"
-              fi
-              echo "Đã gắn tag $TAG cho $SHA"
+              NEW_TAGS+=("$TAG")
+            elif [[ " $RETAG " == *" $VERSION "* ]] && [ "$(git rev-list -n 1 "$TAG")" != "$SHA" ]; then
+              git tag -f -a "$TAG" "$SHA" -m "$DISPLAY_NAME $TAG"
+              NEW_TAGS+=("$TAG"); REBUILD+=("$TAG")
             fi
+          done
 
-            # Phát hành nếu tag chưa có bản phát hành
-            if gh release view "$TAG" >/dev/null 2>&1; then
-              continue
+          # Đẩy tất cả tag trong một lần, luôn quá 3 tag (thêm tag tạm) để GitHub
+          # không kích hoạt workflow cũ nằm trong các commit được gắn tag.
+          if [ ${#NEW_TAGS[@]} -gt 0 ]; then
+            BATCH=("${NEW_TAGS[@]}"); TMP=()
+            while [ $(( ${#BATCH[@]} + ${#TMP[@]} )) -le 3 ]; do
+              T="tmp-release-batch-${GITHUB_RUN_ID}-${#TMP[@]}"
+              git tag "$T" HEAD; TMP+=("$T")
+            done
+            REFS=(); for T in "${BATCH[@]}" "${TMP[@]}"; do REFS+=("refs/tags/$T"); done
+            if git push -f origin "${REFS[@]}"; then
+              echo "Đã gắn tag: ${NEW_TAGS[*]}"
+            else
+              echo "::warning::Không đẩy được cả lô tag; thử từng tag."
+              for T in "${NEW_TAGS[@]}"; do
+                if ! git push -f origin "refs/tags/$T"; then
+                  git tag -d "$T"
+                  echo "::warning::Không gắn được tag $T (commit có workflow khác bản hiện tại). Thêm secret RELEASE_TOKEN rồi chạy lại workflow."
+                fi
+              done
             fi
+            for T in "${TMP[@]}"; do
+              git push origin ":refs/tags/$T" 2>/dev/null || true
+              git tag -d "$T" >/dev/null
+            done
+          fi
+
+          # 3. Dựng lại bản phát hành của tag vừa dời
+          for TAG in "${REBUILD[@]}"; do
+            gh release delete "$TAG" --yes 2>/dev/null || true
+          done
+
+          # 4. Phát hành mọi tag phiên bản chưa có bản phát hành
+          for VERSION in "${ORDER[@]}"; do
+            TAG="v$VERSION"
+            git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || continue
+            gh release view "$TAG" >/dev/null 2>&1 && continue
 
             TAG_SHA=$(git rev-list -n 1 "$TAG")
             BUILD=$(mktemp -d)

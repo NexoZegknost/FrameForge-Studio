@@ -2,7 +2,7 @@
 
 Plugin cho Claude giúp làm video tiếng Việt. Gói plugin hiện có một skill: **videoOverviewPrompt** (prompt cho Video Overview của Gemini Notebook).
 
-Phiên bản hiện tại: **0.3.7** · [Lịch sử thay đổi](CHANGELOG.md)
+Phiên bản hiện tại: **0.3.8** · [Lịch sử thay đổi](CHANGELOG.md)
 
 ## Tính năng
 

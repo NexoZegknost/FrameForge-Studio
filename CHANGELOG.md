@@ -2,6 +2,13 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.8
+- Sửa quy trình phát hành sau sự cố tag đẩy tay chạy workflow cũ: workflow cũ đã tự thêm các commit `chore(release)` hạ phiên bản trên `main` và dời tag v0.1.2, v0.2.0, v0.2.1 sang các commit đó.
+  - Tag đẩy tay trỏ đúng commit đã mang số phiên bản thì chỉ phát hành, không sửa nhánh; không bao giờ hạ số phiên bản của nhánh mặc định.
+  - Bỏ qua commit `chore(release)` khi tìm commit đổi phiên bản.
+  - Đẩy mọi tag mới trong một lần (luôn quá 3 tag, thêm tag tạm nếu cần) để GitHub không kích hoạt workflow cũ nằm trong các commit được gắn tag.
+  - Chạy tay với ô `retag` để dời tag về đúng commit đổi phiên bản và dựng lại bản phát hành.
+
 ## 0.3.7
 - Quy trình phát hành quét cả các commit nằm trong nhánh được gộp (merge) vào nhánh mặc định, để mỗi commit đổi phiên bản trong pull request đều được gắn tag và phát hành, không chỉ phiên bản cuối.
 
