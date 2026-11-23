@@ -18,6 +18,12 @@ Cách giải thích (theo đúng thứ tự):
 Bắt buộc giải thích: [quy trình, công thức kèm ý nghĩa từng đại lượng, số liệu kèm đơn vị,
 hình vẽ mô tả bằng lời — rút từ tài liệu, xem references/anchor-extraction.md]
 
+Hình minh họa:
+- Mỗi bước có sơ đồ khối với mũi tên chỉ chiều tác động, hoặc hình trạng thái trước/sau.
+- [Bảng so sánh … khi có hai đối tượng trở lên.]
+- Dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu.
+- Công thức hiển thị kèm chú thích từng đại lượng.
+
 Yêu cầu:
 - Trình bày bằng giọng miền Nam (Nam Bộ), văn phong gần gũi như một buổi giảng bài thực tế.
 - Với mỗi bước, đưa ra ví dụ minh họa cụ thể, dễ hình dung.

@@ -57,6 +57,8 @@ Phần thân prompt đi theo **chuỗi giải thích năm bước**, không li�
 
 Sau chuỗi giải thích, mỗi prompt có dòng **"Bắt buộc giải thích: …"** liệt kê các điểm neo của cụm.
 
+Tiếp theo là khối **"Hình minh họa"** (chọn loại hình theo `references/visual-guidelines.md`): sơ đồ khối có mũi tên chỉ dòng chảy / chiều tác động, hình trạng thái trước và sau của mỗi bước, bảng so sánh khi có hai đối tượng trở lên, công thức kèm chú thích từng đại lượng và đơn vị; dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu, không thay bằng hình tượng trưng.
+
 Không chép nguyên văn bài ghi vào prompt — Gemini Notebook tự lấy nội dung chi tiết từ nguồn (source) đã có trong notebook. Prompt chỉ nêu phạm vi và cách giải thích.
 
 ### Bước 5: Gợi ý cấu hình khác

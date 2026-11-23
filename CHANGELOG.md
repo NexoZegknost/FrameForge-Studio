@@ -2,6 +2,10 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.3
+- **videoOverviewPrompt**: mỗi prompt có khối "Hình minh họa" để hình bám kỹ thuật thay vì hình trang trí — sơ đồ khối có mũi tên chỉ chiều tác động, hình trạng thái trước/sau từng bước, bảng so sánh, công thức kèm chú thích đại lượng và đơn vị; dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu.
+- Thêm `references/visual-guidelines.md`: chọn loại hình theo nội dung (cả bài văn học, lịch sử), quy tắc chung và khối mẫu đưa vào prompt.
+
 ## 0.3.2
 - **videoOverviewPrompt**: Bước 2 rút thêm **điểm neo bắt buộc giải thích** — quy trình, công thức/định luật/quy tắc, số liệu/thông số, hình vẽ/sơ đồ (mô tả lại bằng lời vì Gemini Notebook có thể không đọc được hình trong PDF quét); giữ đúng tên gọi, ký hiệu, đơn vị và ghi vị trí trong tài liệu.
 - Mỗi prompt có dòng "Bắt buộc giải thích: …" cho điểm neo của cụm; hướng dẫn chi tiết trong `references/anchor-extraction.md`.
