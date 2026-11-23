@@ -59,9 +59,25 @@ Sau chuỗi giải thích, mỗi prompt có dòng **"Bắt buộc giải thích:
 
 Tiếp theo là khối **"Hình minh họa"** (chọn loại hình theo `references/visual-guidelines.md`): sơ đồ khối có mũi tên chỉ dòng chảy / chiều tác động, hình trạng thái trước và sau của mỗi bước, bảng so sánh khi có hai đối tượng trở lên, công thức kèm chú thích từng đại lượng và đơn vị; dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu, không thay bằng hình tượng trưng.
 
+Cuối prompt là khối **"Ràng buộc"** chặn kiểu nói chung chung:
+- vào thẳng vấn đề sau tối đa 1–2 câu, không mở bài dài dòng;
+- không dùng câu sáo rỗng ("đây là vấn đề rất quan trọng", "có vai trò to lớn");
+- mỗi ý gắn với một chi tiết, số liệu hoặc thuật ngữ cụ thể lấy từ tài liệu;
+- ví dụ là tình huống cụ thể có đối tượng, số liệu, kết quả, không viết kiểu "ví dụ như trong đời sống hằng ngày";
+- giải thích nghĩa của mọi thuật ngữ ngay lần đầu xuất hiện.
+
 Không chép nguyên văn bài ghi vào prompt — Gemini Notebook tự lấy nội dung chi tiết từ nguồn (source) đã có trong notebook. Prompt chỉ nêu phạm vi và cách giải thích.
 
-### Bước 5: Gợi ý cấu hình khác
+### Bước 5: Tự kiểm tra bộ prompt
+Trước khi trình bày, rà từng prompt; mục nào chưa đạt thì sửa rồi mới đưa:
+- [ ] Có câu "Video này CHỈ giải thích …; bỏ qua các phần khác", và chỉ một cơ chế.
+- [ ] Đủ năm bước của chuỗi giải thích, không còn dấu [...] chưa điền; mỗi bước biến đổi có lý do.
+- [ ] Dòng "Bắt buộc giải thích" có đủ điểm neo của cụm, đúng tên gọi, ký hiệu, số liệu, đơn vị như tài liệu.
+- [ ] Khối "Hình minh họa" hợp với cụm (có bảng so sánh khi có hai đối tượng, có công thức khi cụm có công thức).
+- [ ] Khối "Ràng buộc" giữ nguyên; bản thân prompt cũng không có câu sáo rỗng.
+- [ ] Cả bộ phủ kín đề cương, mỗi mục thuộc đúng một video, thứ tự xem hợp lý.
+
+### Bước 6: Gợi ý cấu hình khác
 Luôn kèm theo bộ prompt các gợi ý sau (dùng chung cho cả bộ):
 - **Format**: Explainer (không chọn Brief — vì cần chi tiết đầy đủ)
 - **Visual Style**: chọn theo tính chất nội dung
@@ -70,7 +86,7 @@ Luôn kèm theo bộ prompt các gợi ý sau (dùng chung cho cả bộ):
   - Không chắc → Whiteboard (phong cách giáo dục trung tính)
 - **Language**: Tiếng Việt
 
-### Bước 6: Trình bày kết quả
+### Bước 7: Trình bày kết quả
 Đưa cho người dùng:
 1. Bảng kế hoạch bộ video: số thứ tự, tên cụm, các mục đề cương thuộc cụm.
 2. **Bộ prompt đánh số theo thứ tự xem** — mỗi video một khối code riêng, có tiêu đề `Video n/N — [tên cụm]` để copy dễ dàng.

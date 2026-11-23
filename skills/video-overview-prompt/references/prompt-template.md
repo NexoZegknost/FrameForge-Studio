@@ -24,10 +24,14 @@ Hình minh họa:
 - Dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu.
 - Công thức hiển thị kèm chú thích từng đại lượng.
 
-Yêu cầu:
-- Trình bày bằng giọng miền Nam (Nam Bộ), văn phong gần gũi như một buổi giảng bài thực tế.
-- Với mỗi bước, đưa ra ví dụ minh họa cụ thể, dễ hình dung.
-- Giải thích cặn kẽ, tránh rút gọn hay lướt qua.
+Ràng buộc:
+- Trình bày bằng giọng miền Nam (Nam Bộ), văn phong gần gũi như đang giảng trên lớp.
+- Vào thẳng vấn đề sau tối đa 1–2 câu mở đầu; không mở bài dài dòng.
+- Không dùng câu sáo rỗng như "đây là vấn đề rất quan trọng", "có vai trò to lớn".
+- Mỗi ý gắn với một chi tiết, số liệu hoặc thuật ngữ cụ thể trong tài liệu.
+- Ví dụ phải là tình huống cụ thể, có đối tượng, số liệu và kết quả; không nói kiểu
+  "ví dụ như trong đời sống hằng ngày".
+- Giải thích nghĩa của mọi thuật ngữ ngay lần đầu xuất hiện.
 ```
 
 ## Chuỗi giải thích năm bước
@@ -46,3 +50,6 @@ Danh sách tên mục khiến Gemini Notebook nói mỗi mục vài câu. Chuỗ
 **Bài không có cơ chế kỹ thuật** (văn học, lịch sử, xã hội) dùng chuỗi tương ứng: bối cảnh → nhân vật, lực lượng tham gia → diễn biến từng giai đoạn kèm nguyên nhân → kết quả → ý nghĩa, và điều gì khác đi nếu một điều kiện thay đổi.
 
 Video sau trong bộ có thể thêm một câu nối: "Người xem đã biết [nội dung video trước], không giải thích lại."
+
+## Ràng buộc chặn nói chung chung
+Khối "Ràng buộc" giữ nguyên trong mọi prompt. Có thể thêm một dòng riêng cho cụm khi tài liệu có thuật ngữ dễ nhầm (ví dụ "phân biệt rõ 'công suất' và 'hiệu suất'").

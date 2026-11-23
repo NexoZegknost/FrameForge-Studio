@@ -2,6 +2,10 @@
 
 Mỗi phiên bản là một commit gắn tag `vMAJOR.MINOR.PATCH` (bản thử nghiệm: `-beta.N`); số phiên bản cũng nằm trong `.claude-plugin/plugin.json` và README. Tag và bản phát hành do GitHub Actions tự tạo khi commit đổi phiên bản lên nhánh mặc định.
 
+## 0.3.4
+- **videoOverviewPrompt**: mỗi prompt có khối "Ràng buộc" chặn kiểu nói chung chung — vào thẳng vấn đề sau tối đa 1–2 câu, cấm câu sáo rỗng, mỗi ý gắn với chi tiết/số liệu/thuật ngữ trong tài liệu, ví dụ phải có đối tượng, số liệu, kết quả, giải thích thuật ngữ ngay lần đầu xuất hiện.
+- Thêm bước tự kiểm tra bộ prompt trước khi trình bày (phạm vi một cơ chế, đủ chuỗi năm bước, đủ điểm neo, hình minh họa, ràng buộc, phủ kín đề cương).
+
 ## 0.3.3
 - **videoOverviewPrompt**: mỗi prompt có khối "Hình minh họa" để hình bám kỹ thuật thay vì hình trang trí — sơ đồ khối có mũi tên chỉ chiều tác động, hình trạng thái trước/sau từng bước, bảng so sánh, công thức kèm chú thích đại lượng và đơn vị; dùng đúng tên gọi, ký hiệu, số liệu trong tài liệu.
 - Thêm `references/visual-guidelines.md`: chọn loại hình theo nội dung (cả bài văn học, lịch sử), quy tắc chung và khối mẫu đưa vào prompt.
