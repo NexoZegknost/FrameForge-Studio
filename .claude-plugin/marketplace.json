@@ -1,0 +1,14 @@
+{
+  "name": "frameforge-studio",
+  "owner": {
+    "name": "NexoZegknost"
+  },
+  "description": "Marketplace của FrameForge - Studio: bộ công cụ làm video tiếng Việt.",
+  "plugins": [
+    {
+      "name": "frameforge-studio",
+      "source": "./",
+      "description": "FrameForge - Studio — bộ công cụ làm video tiếng Việt: soạn prompt cho Video Overview của Gemini Notebook (NotebookLM) để tạo video bài giảng."
+    }
+  ]
+}
